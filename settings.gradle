@@ -1,0 +1,3 @@
+rootProject.name = 'shardingsphere-test'
+include 'sharding-pg-test'
+
