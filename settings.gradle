@@ -1,3 +1,4 @@
 rootProject.name = 'shardingsphere-test'
 include 'sharding-pg-test'
+include 'metadata-test'
 

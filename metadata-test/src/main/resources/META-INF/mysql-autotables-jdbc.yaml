@@ -1,0 +1,97 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+dataSources:
+  ds_2:
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/scaling_ds_10?serverTimezone=UTC&useSSL=false
+    password: root
+    customPoolProps:
+      idleTimeout: '60000'
+      maximumPoolSize: '50'
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    username: root
+  ds_3:
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/scaling_ds_11?serverTimezone=UTC&useSSL=false
+    password: root
+    customPoolProps:
+      idleTimeout: '60000'
+      maximumPoolSize: '50'
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    username: root
+  ds_4:
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/scaling_ds_12?serverTimezone=UTC&useSSL=false
+    password: root
+    customPoolProps:
+      idleTimeout: '60000'
+      maximumPoolSize: '50'
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    username: root
+
+rules:
+  - !SHARDING
+    autoTables:
+      t_order:
+        actualDataSources: ds_2,ds_3,ds_4
+        keyGenerateStrategy:
+          column: order_id
+          keyGeneratorName: t_order_snowflake
+        logicTable: t_order
+        shardingStrategy:
+          standard:
+            shardingAlgorithmName: t_order_hash_mod
+            shardingColumn: order_id
+      t_order_item:
+        actualDataSources: ds_2,ds_3,ds_4
+        keyGenerateStrategy:
+          column: order_id
+          keyGeneratorName: t_order_item_snowflake
+        logicTable: t_order_item
+        shardingStrategy:
+          standard:
+            shardingAlgorithmName: t_order_item_hash_mod
+            shardingColumn: order_id
+    bindingTables:
+      - t_order,t_order_item
+    keyGenerators:
+      t_order_snowflake:
+        props:
+          worker-id: '123'
+        type: snowflake
+      t_order_item_snowflake:
+        props:
+          worker-id: '123'
+        type: snowflake
+    scaling:
+      default_scaling:
+        completionDetector:
+          props:
+            incremental-task-idle-minute-threshold: 1
+          type: IDLE
+        dataConsistencyChecker:
+          props:
+            chunk-size: 1000
+          type: DATA_MATCH
+    scalingName: default_scaling
+    shardingAlgorithms:
+      t_order_hash_mod:
+        props:
+          sharding-count: '6'
+        type: hash_mod
+      t_order_item_hash_mod:
+        props:
+          sharding-count: '6'
+        type: hash_mod

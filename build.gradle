@@ -52,13 +52,15 @@ subprojects {
     }
 
     ext {
-        shardingsphereVersion = '5.0.0-RC1-SNAPSHOT'
+        shardingsphereVersion = '5.0.1-SNAPSHOT'
     }
 
     dependencies {
         compile("org.apache.shardingsphere:shardingsphere-jdbc-core:${shardingsphereVersion}")
 
         compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.5'
+        compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
+        compile "mysql:mysql-connector-java:5.1.48"
 
         compile "org.slf4j:slf4j-api:1.7.25"
         compile "org.slf4j:log4j-over-slf4j:1.7.25"
