@@ -26,12 +26,21 @@ on:
   pull_request:
     branches: [ master ]
 
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       # https://docs.github.com/en/actions/learn-github-actions/contexts#inputs-context
+      - name: Dump Concurrency Group
+        env:
+          CON_GROUP: ${{ github.workflow }}-${{ github.ref }}
+        run: echo "$CON_GROUP"
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
