@@ -25,10 +25,18 @@ on:
     branches: [ master ]
     paths-ignore:
       - 'docs/**'
+      - '*.md'
+      - '*.txt'
+      - '.*.yaml'
+      - '.*.yml'
   pull_request:
     branches: [ master ]
     paths-ignore:
       - 'docs/**'
+      - '*.md'
+      - '*.txt'
+      - '.*.yaml'
+      - '.*.yml'
 
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
 concurrency:
