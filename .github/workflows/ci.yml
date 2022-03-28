@@ -29,6 +29,7 @@ on:
       - '*.txt'
       - '.*.yaml'
       - '.*.yml'
+      - '**/src/test/**'
   pull_request:
     branches: [ master ]
     paths-ignore:
@@ -37,6 +38,7 @@ on:
       - '*.txt'
       - '.*.yaml'
       - '.*.yml'
+      - '**/src/test/**'
 
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
 concurrency:
