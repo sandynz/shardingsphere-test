@@ -33,4 +33,5 @@ public final class MetadataDataSourceFactory {
     private static File getResourceAsFile(String fileName) {
         return new File(MetadataDataSourceFactory.class.getClassLoader().getResource(fileName).getFile());
     }
+    
 }
